@@ -51,9 +51,9 @@ the folder containing `request.json`, or provide the file's full path:
 curl.exe -X POST ^
   -v ^
   -H "Content-Type: application/json" ^
-  -d "@C:\path\to\request.json" ^
-  "https://kcu6xadvgzk3u7rfg456bp4qi40dcxqt.lambda-url.us-east-2.on.aws/"
-```
+  -d "@C:\Users\efrat\Programming Projects\IdeaProjects\kreslavskiy-wordle-solver\request.json" ^
+  "https://4l3s2jlxd7y6f2t65uenwkfpki0nllcz.lambda-url.us-east-2.on.aws/"
+  ```
 
 Opening the Lambda URL directly in a browser sends a GET request without a
 JSON body, so the Lambda responds with `Request body is missing`. Use `curl`
