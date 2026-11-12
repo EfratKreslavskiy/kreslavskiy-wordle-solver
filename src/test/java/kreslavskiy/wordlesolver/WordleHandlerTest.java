@@ -12,7 +12,16 @@ class WordleHandlerTest {
         //given
         WordleHandler handler = new WordleHandler();
         APIGatewayV2HTTPEvent event = eventWithBody(
-                "{\"guesses\":[{\"guess\":\"CRATE\",\"feedback\":\"GGGGG\"}]}");
+                """
+                {
+                  "guesses": [
+                    {
+                      "guess": "CRATE",
+                      "feedback": "GGGGG"
+                    }
+                  ]
+                }
+                """);
 
         //when
         APIGatewayV2HTTPResponse response = handler.handleRequest(event, null);
@@ -27,7 +36,16 @@ class WordleHandlerTest {
         //given
         WordleHandler handler = new WordleHandler();
         APIGatewayV2HTTPEvent event = eventWithBody(
-                "{\"guesses\":[{\"guess\":\"CRATE\",\"feedback\":\"BYYYY\"}]}");
+                """
+                {
+                  "guesses": [
+                    {
+                      "guess": "CRATE",
+                      "feedback": "BYYYY"
+                    }
+                  ]
+                }
+                """);
 
         //when
         APIGatewayV2HTTPResponse response = handler.handleRequest(event, null);
@@ -42,7 +60,12 @@ class WordleHandlerTest {
     void emptyRequestReturnsTheWholeRealDictionary() {
         //given
         WordleHandler handler = new WordleHandler();
-        APIGatewayV2HTTPEvent event = eventWithBody("{\"guesses\":[]}");
+        APIGatewayV2HTTPEvent event = eventWithBody(
+                """
+                {
+                  "guesses": []
+                }
+                """);
 
         //when
         APIGatewayV2HTTPResponse response = handler.handleRequest(event, null);

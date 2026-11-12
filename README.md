@@ -1,10 +1,12 @@
 # Wordle Solver
 
-This project is a Java AWS Lambda wordle solver. Given one or more Wordle
+This project is a Java AWS Lambda Wordle solver. Given one or more Wordle
 guesses and their color feedback, it returns the words from its dictionary
 that could still be the answer.
 
-The deployed Lambda accepts a JSON request with this format:
+## Request format
+
+The Lambda accepts a JSON request with this format:
 
 ```json
 {
@@ -23,38 +25,52 @@ Feedback characters use:
 - `y` for yellow: the letter is in the answer but in a different position
 - `b` for black/gray: the letter is not available in the answer
 
-## Test the deployed Lambda with curl
+## Current AWS Lambda deployment
 
-Create a file named `request.json` in the folder where you will run `curl`:
+The current public Function URL is configured with no authentication:
+
+<https://4l3s2jlxd7y6f2t65uenwkfpki0nllcz.lambda-url.us-east-2.on.aws/>
+
+| Setting | Value |
+| --- | --- |
+| Region | `us-east-2` (US East, Ohio) |
+| Function name | `wordleSolver` |
+| Runtime | Java 25 |
+| Architecture | `x86_64` |
+| Handler | `kreslavskiy.wordlesolver.WordleHandler::handleRequest` |
+| Function URL authentication | `NONE` (public) |
+| Invoke mode | `BUFFERED` |
+| Deployment artifact | `build/libs/kreslavskiy-wordle-solver-1.0-SNAPSHOT-all.jar` |
+
+## Test the deployed Lambda
+
+Create or use `request.json` in the folder where you run the command:
 
 ```json
-{"guesses":[{"guess":"crane","feedback":"bybgb"}]}
+{
+  "guesses": [
+    {
+      "guess": "crane",
+      "feedback": "bybgb"
+    }
+  ]
+}
 ```
 
-Then run this command in **Command Prompt**:
+In **Command Prompt**, run:
 
 ```cmd
+set "FUNCTION_URL=https://4l3s2jlxd7y6f2t65uenwkfpki0nllcz.lambda-url.us-east-2.on.aws/"
 curl.exe -X POST ^
-  -v ^
   -H "Content-Type: application/json" ^
   -d @request.json ^
-  "https://kcu6xadvgzk3u7rfg456bp4qi40dcxqt.lambda-url.us-east-2.on.aws/"
+  "%FUNCTION_URL%"
 ```
 
-The `^` characters continue the command onto the next line in Command Prompt.
-The response will be a JSON array containing the possible answers.
+The response is a JSON array containing the possible answers. Opening the
+Function URL directly in a browser sends a GET request without a JSON body,
+so the Lambda responds with `Request body is missing`.
 
-You do not need to change into the project folder. Either run the command from
-the folder containing `request.json`, or provide the file's full path:
-
-```cmd
-curl.exe -X POST ^
-  -v ^
-  -H "Content-Type: application/json" ^
-  -d "@C:\Users\efrat\Programming Projects\IdeaProjects\kreslavskiy-wordle-solver\request.json" ^
-  "https://4l3s2jlxd7y6f2t65uenwkfpki0nllcz.lambda-url.us-east-2.on.aws/"
-  ```
-
-Opening the Lambda URL directly in a browser sends a GET request without a
-JSON body, so the Lambda responds with `Request body is missing`. Use `curl`
-or another API client to send the required POST body.
+Because the Function URL is public, do not include credentials, tokens,
+personal information, or other sensitive data in requests or logs. Use only
+harmless test payloads.
